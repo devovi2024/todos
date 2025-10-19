@@ -21,11 +21,9 @@ exports.updateTask = (req, res) => {
         if(err){
             return res.status(500).json({ message: "Task update failed", error: err });
         }
-
         res.status(200).json({ message: "Task updated successfully", result: data });
     });
 }
-
 
 exports.deleteTask = (req, res) => {
     let id = req.params.id;
@@ -36,7 +34,6 @@ exports.deleteTask = (req, res) => {
         res.status(200).json({ message: "Task deleted successfully", result: data });
     });
 }
-
 
 exports.listTaskByStatus = (req, res) => {
     let status = req.params.status;
@@ -58,5 +55,19 @@ exports.listTaskByStatus = (req, res) => {
             return res.status(500).json({ message: "Task fetch failed", error: err });
         }
         res.status(200).json({ message: "Tasks fetched successfully", tasks: data });
+    });
+}
+
+exports.taskStatusCount = (req, res) => {
+    let email = req.headers['email'];
+
+    TasksModel.aggregate([
+        { $match: { email: email } }, 
+        { $group: { _id: "$status", count: { $sum: 1 } } } 
+    ], (err, data) => {
+        if(err){
+            return res.status(500).json({ message: "Failed to count tasks", error: err });
+        }
+        res.status(200).json({ message: "Task status count fetched", counts: data });
     });
 }
