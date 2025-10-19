@@ -43,7 +43,7 @@ app.use((req, res, next) => {
 const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 });
 app.use(limiter);
 
-mongoose.connect("mongodb://localhost:27017/todo", { autoIndex: true })
+mongoose.connect("mongodb+srv://arfanhosenovi:arfanhosenovi201002487@cluster0.a4mj3kc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", { autoIndex: true })
     .then(() => console.log("Database Connection Success"))
     .catch((error) => console.log("Database Connection Failed:", error));
 
